@@ -1294,7 +1294,7 @@ void game_masterroot ( int iUseVRTest )
 				{
 					#ifdef PHOTONMP
 					 t.visuals.generalpromptstatetimer=Timer()+1000;
-					 t.visuals.generalprompt_s="Welcome to VR Quest(r) Social VR";
+					 t.visuals.generalprompt_s="Welcome to VR Quest Social VR";
 					#else
 					 t.visuals.generalpromptstatetimer=Timer()+1000;
 					 t.visuals.generalprompt_s="Press RETURN to Chat";

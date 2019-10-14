@@ -650,10 +650,13 @@ void postprocess_preterrain ( void )
 			t.terrain.playery_f=fTelePortDestY+30;
 			t.terrain.playerz_f=fTelePortDestZ;
 			t.terrain.playerax_f=0;
-			t.terrain.playeray_f=CameraAngleY(0);
-			t.camangy_f=t.terrain.playeray_f;
+			//t.terrain.playeray_f=CameraAngleY(0); // leave as is
+			//t.camangy_f=t.terrain.playeray_f;
 			t.terrain.playeraz_f=0;
+			int iStorefreezeplayerposonly = t.freezeplayerposonly;
+			t.freezeplayerposonly = 1; // ensures rotation is unaffected during teleport
 			physics_setupplayer ( );
+			t.freezeplayerposonly = iStorefreezeplayerposonly;
 		}
 
 		// render VR cameras now
