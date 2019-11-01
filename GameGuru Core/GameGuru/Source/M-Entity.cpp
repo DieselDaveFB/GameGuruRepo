@@ -3111,7 +3111,7 @@ void entity_loadtexturesandeffect ( void )
 				t.texuseid = loadinternaltextureex("effectbank\\reloaded\\media\\blank_O.dds", 1, t.tfullorhalfdivide);
 				t.entityprofiletexoid = t.texuseid; // must always be set.
 
-				// PE: PBR shader support for old media with no texture in fpe.
+				// PE: PBR shader support for old media with no texture in fpe
 				if (g.gpbroverride == 1) 
 				{
 					// None of the below will be in old media , so setup using fallback textures.
