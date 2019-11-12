@@ -1003,7 +1003,7 @@ void terrain_loadlatesttexture ( void )
 
 	// normals for terrain
 	#ifdef VRQUEST
-	 LoadImage ( "effectbank\\reloaded\\media\\blank_N.dds", t.terrain.imagestartindex+21, 0, g.gdividetexturesize );
+	 if ( ImageExist (t.terrain.imagestartindex + 21) == 0 ) LoadImage ( "effectbank\\reloaded\\media\\blank_N.dds", t.terrain.imagestartindex+21, 0, g.gdividetexturesize );
 	#else
 	 if ( FileExist ( cstr(cstr(pLocationOfTerrainTexture)+"\\"+TEXTURE_N_NAME).Get() ) == 1 )
 	 {
@@ -2505,7 +2505,7 @@ void terrain_make ( void )
 					LoadImage ( cstr(cstr("terrainbank\\")+g.terrainstyle_s+"\\texture_D.dds").Get(),t.terrain.imagestartindex+13,0,g.gdividetexturesize );
 
 				#ifdef VRQUEST
-				 LoadImage ( "effectbank\\reloaded\\media\\blank_N.dds", t.terrain.imagestartindex+21, 0, g.gdividetexturesize );
+				 if (ImageExist(t.terrain.imagestartindex + 21) == 0) LoadImage ( "effectbank\\reloaded\\media\\blank_N.dds", t.terrain.imagestartindex+21, 0, g.gdividetexturesize );
 				#else
 				 t.tsplashstatusprogress_s="LOADING TERRAIN NORMALS";
 				 timestampactivity(0,t.tsplashstatusprogress_s.Get());

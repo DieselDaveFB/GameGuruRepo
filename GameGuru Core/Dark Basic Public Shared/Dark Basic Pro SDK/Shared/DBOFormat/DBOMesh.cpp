@@ -1791,7 +1791,7 @@ void LoadColorNormalSpecGloss ( sMesh* pMesh, LPSTR pName, LPSTR TexturePath, in
 		int iTextureType = 0;
 		LPSTR pAlbedoVariant = "";
 		char pTmpName[MAX_STRING];
-		if ( strnicmp ( pTextureName + strlen(pTextureName) - 5, "color", 5 ) == NULL ) 
+		if ( strnicmp ( pTextureName + strlen(pTextureName) - 6, "_color", 6 ) == NULL ) 
 		{
 			pAlbedoVariant = "color";
 			strcpy ( pTmpName, pTextureName );
@@ -1799,7 +1799,7 @@ void LoadColorNormalSpecGloss ( sMesh* pMesh, LPSTR pName, LPSTR TexturePath, in
 			strcpy ( pTextureName, pTmpName );
 			iTextureType = 2;
 		}
-		if ( iTextureType == 0 && strnicmp ( pTextureName + strlen(pTextureName) - 7, "diffuse", 7 ) == NULL ) 
+		if ( iTextureType == 0 && strnicmp ( pTextureName + strlen(pTextureName) - 8, "_diffuse", 8 ) == NULL ) 
 		{
 			pAlbedoVariant = "diffuse";
 			strcpy ( pTmpName, pTextureName );
@@ -1807,7 +1807,7 @@ void LoadColorNormalSpecGloss ( sMesh* pMesh, LPSTR pName, LPSTR TexturePath, in
 			strcpy ( pTextureName, pTmpName );
 			iTextureType = 2;
 		}
-		if ( iTextureType == 0 && strnicmp ( pTextureName + strlen(pTextureName) - 1, "d", 1 ) == NULL ) 
+		if ( iTextureType == 0 && strnicmp ( pTextureName + strlen(pTextureName) - 2, "_d", 2 ) == NULL ) 
 		{
 			pAlbedoVariant = "d";
 			strcpy ( pTmpName, pTextureName );
