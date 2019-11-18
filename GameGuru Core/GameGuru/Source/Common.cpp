@@ -847,6 +847,9 @@ void common_init_globals ( void )
 	Dim2(  t.titlesbar,20, 10  );
 	g.titlessavefile_s = "settings.ini";
 	
+	// simple flag to skip LUA (if code called 'from' lua)
+	t.noluacalls = 0;
+
 	//  Visual settings
 	//g.cheapshadowhistorypacer_f = 0;
 

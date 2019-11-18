@@ -799,6 +799,53 @@ DARKSDK int DB_GetAnimationLength ( int AnimIndex )
 	return (int)length;
 }
 
+DARKSDK BOOL DB_GetAnimationArea(int AnimIndex, int* x, int* y, int* width, int* height)
+{
+	*x = 0;
+	*y = 0;
+	*width = Anim[AnimIndex].StreamRect.right;
+	*height = Anim[AnimIndex].StreamRect.bottom;
+	return TRUE;
+}
+
+DARKSDK int AnimationWidth(int animindex)
+{
+	if (animindex >= 1 && animindex < ANIMATIONMAX)
+	{
+		if (animation[animindex].active == true)
+		{
+			int x, y, width, height;
+			DB_GetAnimationArea(animindex, &x, &y, &width, &height);
+			return width;
+		}
+		else
+			RunTimeError(RUNTIMEERROR_ANIMNOTEXIST);
+	}
+	else
+		RunTimeError(RUNTIMEERROR_ANIMNUMBERILLEGAL);
+
+	return 0;
+}
+
+DARKSDK int AnimationHeight(int animindex)
+{
+	if (animindex >= 1 && animindex < ANIMATIONMAX)
+	{
+		if (animation[animindex].active == true)
+		{
+			int x, y, width, height;
+			DB_GetAnimationArea(animindex, &x, &y, &width, &height);
+			return height;
+		}
+		else
+			RunTimeError(RUNTIMEERROR_ANIMNOTEXIST);
+	}
+	else
+		RunTimeError(RUNTIMEERROR_ANIMNUMBERILLEGAL);
+
+	return 0;
+}
+
 #else
 
 struct

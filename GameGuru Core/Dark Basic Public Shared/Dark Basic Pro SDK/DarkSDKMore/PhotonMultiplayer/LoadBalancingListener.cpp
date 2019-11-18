@@ -127,12 +127,14 @@ void LoadBalancingListener::connectionErrorReturn(int errorCode)
 	char pStr[1024];
 	sprintf(pStr,"connectionErrorReturn %d",errorCode);
 	//MessageBox ( NULL, pStr, pStr, MB_OK );
+	mPhotonView->setConnectingState(false);
 }
 void LoadBalancingListener::clientErrorReturn(int errorCode)
 {
 	char pStr[1024];
 	sprintf(pStr,"clientErrorReturn %d",errorCode);
 	//MessageBox ( NULL, pStr, pStr, MB_OK );
+	mPhotonView->setConnectingState(false);
 }
 void LoadBalancingListener::warningReturn(int warningCode)
 {
@@ -145,6 +147,7 @@ void LoadBalancingListener::serverErrorReturn(int errorCode)
 	char pStr[1024];
 	sprintf(pStr,"serverErrorReturn %d",errorCode);
 	//MessageBox ( NULL, pStr, pStr, MB_OK );
+	mPhotonView->setConnectingState(false);
 }
 
 void LoadBalancingListener::createRoom ( LPSTR name )

@@ -3118,13 +3118,13 @@ void game_main_loop ( void )
 				}
 			}
 
-			//  All Entity logic
+			// All Entity logic
 			t.ttempoverallaiperftimerstamp=PerformanceTimer();
-			if (  t.hardwareinfoglobals.noai == 0 ) 
+			if ( t.hardwareinfoglobals.noai == 0 ) 
 			{
 				// LUA and Entity Logic
-				lua_loop ( );
-				t.game.perf.ai1 += PerformanceTimer()-g.gameperftimestamp ; g.gameperftimestamp=PerformanceTimer();
+				if (t.noluacalls == 0) lua_loop();
+				t.game.perf.ai1 += PerformanceTimer() - g.gameperftimestamp; g.gameperftimestamp = PerformanceTimer();
 				entity_loop ( );
 				entity_loopanim ( );
 				t.game.perf.ai2 += PerformanceTimer()-g.gameperftimestamp ; g.gameperftimestamp=PerformanceTimer();

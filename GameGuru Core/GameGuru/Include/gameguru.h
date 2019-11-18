@@ -4371,6 +4371,7 @@ struct Stemps
 	std::vector <waypointtype> waypoint;
 	std::vector <int> wshotmax;
 	aisystemtype aisystem;
+	int noluacalls;
 	float aspect_f;
 	int bkheight;
 	float bottom_f;

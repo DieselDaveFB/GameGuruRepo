@@ -808,7 +808,10 @@ void entity_lua_playvideonoskip ( int i3DMode, int iNoSkipFlag )
 				if ( ObjectExist(g.video3dobjectoffset)==1 ) DeleteObject ( g.video3dobjectoffset );
 				if ( ObjectExist(g.video3dobjectoffset)==0 )
 				{
-					MakeObjectPlane ( g.video3dobjectoffset, 640/5.0f, 480/5.0f );
+					if (i3DMode == 1)
+						MakeObjectPlane ( g.video3dobjectoffset, 640/5.0f, 640/5.0f );
+					else
+						MakeObjectPlane(g.video3dobjectoffset, 640 / 5.0f, 480 / 5.0f);
 					PositionObject ( g.video3dobjectoffset, -100000, -100000, -100000 );
 					SetObjectEffect ( g.video3dobjectoffset, g.guishadereffectindex );
 					DisableObjectZDepth ( g.video3dobjectoffset );
@@ -830,6 +833,7 @@ void entity_lua_playvideonoskip ( int i3DMode, int iNoSkipFlag )
 			else
 				PlaceAnimation (  t.tvideoid,0,0,GetDisplayWidth(),GetDisplayHeight() );
 			t.ttrackmouse=0;
+			int ttrackesckey = 0;
 			while (  AnimationPlaying(t.tvideoid) == 1 ) 
 			{
 				// handle skip functionality
@@ -841,32 +845,34 @@ void entity_lua_playvideonoskip ( int i3DMode, int iNoSkipFlag )
 					if (  t.inputsys.mclick != 0 && t.ttrackmouse == 1  )  t.ttrackmouse = 2;
 					if (  t.inputsys.mclick == 0 && t.ttrackmouse == 2  )  break;
 					if ( GGVR_RightController_Trigger() != 0 || GGVR_LeftController_Trigger() != 0 ) break;
+					if (ttrackesckey == 0 && EscapeKey() == 1) ttrackesckey = 1;
+					if (ttrackesckey == 1 && EscapeKey() == 0) break;
 				}
 
 				// handle 3d object if available
 				if ( i3DMode == 1 )
 				{
-					//float fStCamX = CameraAngleX();
-					//float fStCamZ = CameraAngleZ();
 					RotateCamera ( 0, 0, CameraAngleY(0), 0 );
 					MoveCamera ( 0, 100.0f );
 					float fX = CameraPositionX(0);
 					float fZ = CameraPositionZ(0);
-					float fY = BT_GetGroundHeight(t.terrain.TerrainID,fX,fZ) + 50.0f;
+					float fY = CameraPositionY(0);
 					float fA = CameraAngleY(0);
 					MoveCamera ( 0, -100.0f );
-					//RotateCamera ( 0, fStCamX, CameraAngleY(0), fStCamZ );
 					RotateCamera ( 0, 0, CameraAngleY(0), 0 ); // force user to look straight on
 					PositionObject ( g.video3dobjectoffset, fX, fY, fZ );
-					PointObject ( g.video3dobjectoffset, ObjectPositionX(t.aisystem.objectstartindex), ObjectPositionY(t.aisystem.objectstartindex)+60.0f, ObjectPositionZ(t.aisystem.objectstartindex) );
-					MoveObject ( g.video3dobjectoffset, 15.0f );
+					PointObject(g.video3dobjectoffset, ObjectPositionX(t.aisystem.objectstartindex), ObjectPositionY(t.aisystem.objectstartindex), ObjectPositionZ(t.aisystem.objectstartindex));
 					RotateObject ( g.video3dobjectoffset, 0, fA+180.0f, 0 );
+					float fAspect = (float)AnimationHeight(t.tvideoid) / (float)AnimationWidth(t.tvideoid);
+					ScaleObject(g.video3dobjectoffset, 100.0f, 100.0f * fAspect, 100.0f);
 					OverrideTextureWithAnimation ( t.tvideoid, g.video3dobjectoffset );
 				}
 
 				// keep things going
 				t.aisystem.processplayerlogic = 0;
+				t.noluacalls = 1;
 				game_main_loop ( );
+				t.noluacalls = 0;
 				game_sync ( );
 			}
 			t.aisystem.processplayerlogic = 1;

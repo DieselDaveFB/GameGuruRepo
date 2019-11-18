@@ -6700,8 +6700,12 @@ void mp_launchGame ( void )
 
 void mp_restartMultiplayerSystem ( void )
 {
-	while ( mp_closeconnection() == 0 )
+	DWORD dwTimeNow = timeGetTime();
+	bool bStayWhileRestarting = true;
+	while (bStayWhileRestarting == true)
 	{
+		if (mp_closeconnection() != 0) bStayWhileRestarting = false;
+		if (timeGetTime()-dwTimeNow>2000) bStayWhileRestarting = false;
 		#ifdef PHOTONMP
 		 PhotonLoop();
 		#else
