@@ -2115,9 +2115,10 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 {
 	// iCloneSharedData modes:
 	// 101 = use existing object in destination and JUST CLONE TEXTURES OVER
+	// 102 = use existing object in destination and JUST CLONE TEXTURES (AND FORCE MULTIMATERIALS TO COPY OVER IF PRESENT)
 
 	// check if dest object not exists
-	if ( iCloneSharedData!=101 )
+	if ( iCloneSharedData < 100 )
 	{
 		// except for when dest already exists via mode 101
 		if ( !ConfirmNewObject ( iDestinationID ) ) return;
@@ -2136,7 +2137,7 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 		pObject = pObject->pInstanceOfObject;
 
 	// clone the object
-	if ( iCloneSharedData!=101 )
+	if ( iCloneSharedData < 100 )
 	{
 		// create new object in destination
 		ResetVertexDataInMesh ( pObject );
@@ -2146,7 +2147,7 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 
 		// Special clone parameter shares an original object not deleted (good for lots of bone anim objects)
 		sObject* pNewObject = g_ObjectList [ iDestinationID ];
-		if ( iCloneSharedData!=0 )
+		if ( iCloneSharedData != 0 )
 		{
 			// work on cloned object (cut out potential huge anim data)
 			// Update dependency details
@@ -2250,7 +2251,7 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 	pNewObject->fSpineCenterTravelDeltaZ = g_ObjectList [ iSourceID ]->fSpineCenterTravelDeltaZ;
 
 	// handle clone ref
-	if ( iCloneSharedData!=101 )
+	if ( iCloneSharedData < 100 )
 	{
 		// some shader settings take over vertex control (so reset to original data)
 		ResetVertexDataInMesh ( pNewObject );
@@ -2272,8 +2273,11 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 				// lee - 230206 - handle if multimaterial or regular mesh
 				//pMesh->bUseMultiMaterial = pOrigMesh->bUseMultiMaterial;
 				DWORD dwMultiMatCount = pOrigMesh->dwMultiMaterialCount;
-				if ( pMesh->bUseMultiMaterial==true && pOrigMesh->bUseMultiMaterial==true )
+				if ( pOrigMesh->bUseMultiMaterial == true && (pMesh->bUseMultiMaterial==true || iCloneSharedData == 102) )
 				{
+					// 141119 - new 102 mode which will force multimaterials to copy over (lightmapper uses 101 which forces first multimaterial texture to texture slot zero)
+					if ( iCloneSharedData == 102) pMesh->bUseMultiMaterial = true;
+
 					// Currrent texture if any used
 					sTexture* pTexture = NULL;
 
@@ -2345,7 +2349,7 @@ DARKSDK_DLL void CloneObject ( int iDestinationID, int iSourceID, int iCloneShar
 		}
 	}
 
-	if ( iCloneSharedData!=101 )
+	if ( iCloneSharedData < 100 )
 	{
 		// position data of cloned object must match source
 		memcpy ( &g_ObjectList [ iDestinationID ]->position, &pObject->position, sizeof ( sPositionData ) );

@@ -860,16 +860,20 @@ void game_masterroot ( int iUseVRTest )
 									instanceonly++;
 								}
 
+								// 141119 - dont mbatch multimaterial entities
+								bool bIsMultiMaterial = false;
+								if (pObject && pObject->ppMeshList && pObject->ppMeshList[0]->dwMultiMaterialCount > 0) bIsMultiMaterial = true;
+								if (pObject2 && pObject2->ppMeshList && pObject2->ppMeshList[0]->dwMultiMaterialCount > 0) bIsMultiMaterial = true;
+
 								//PE: Later validate this.
 								//int iPolyCount = GetObjectPolygonCount(t.obj);
-
 //								t.tdx_f = t.entityelement[t.e].x - t.entityelement[t.e+1].x;
 //								t.tdz_f = t.entityelement[t.e].z - t.entityelement[t.e+1].z;
 //								t.tdd_f = Sqrt(abs(t.tdx_f*t.tdx_f) + abs(t.tdz_f*t.tdz_f));
 
 								//PE: Keep objects distance below 700 for best culling.
-								if (pObject && pObject2 && instanceonly >= 2  && t.entityelement[nextObjeid].dc_distance < DC_DISTANCE && g.merged_new_objects < 4980 ) {
-									
+								if ( pObject && pObject2 && bIsMultiMaterial == false && instanceonly >= 2  && t.entityelement[nextObjeid].dc_distance < DC_DISTANCE && g.merged_new_objects < 4980 )
+								{									
 									if (pObject == pObject2) {
 										//Same master glue it.
 
@@ -1209,7 +1213,7 @@ void game_masterroot ( int iUseVRTest )
 
 											if (GetMeshExist(g.meshlightmapwork) == 1)  DeleteMesh(g.meshlightmapwork);
 												
-											CloneObject(destobj, t.obj, 101); //PE: Copy textures only.
+											CloneObject(destobj, t.obj, 101); //PE: Copy textures only
 
 											//PE: TODO store t.e and glueobj under pObject->draw_call_obj
 											//PE: So we can access them directly in drawobject.
