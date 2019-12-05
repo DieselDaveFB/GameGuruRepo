@@ -1184,6 +1184,7 @@ luaMessage** ppLuaMessages = NULL;
 							fReturnValue = sqrt ( fabs(fDX*fDX)+fabs(fDY*fDY)+fabs(fDZ*fDZ) );
 							break;
 						}
+						case 20: fReturnValue = (float)t.entityelement[iEntityIndex].eleprof.speed / 100.0f; break;
 					}
 				}
 			}
@@ -1212,6 +1213,7 @@ luaMessage** ppLuaMessages = NULL;
  int GetEntityAngleX(lua_State *L) { return GetEntityData ( L, 4 ); }
  int GetEntityAngleY(lua_State *L) { return GetEntityData ( L, 5 ); }
  int GetEntityAngleZ(lua_State *L) { return GetEntityData ( L, 6 ); }
+ int GetMovementSpeed(lua_State *L) { return GetEntityData(L, 20); }
  int GetAnimationSpeed(lua_State *L) { return GetEntityData ( L, 11 ); }
  int SetAnimationSpeedModulation(lua_State *L) { return RawSetEntityData ( L, 12 ); }
  int GetAnimationSpeedModulation(lua_State *L) { return GetEntityData ( L, 12 ); }
@@ -5712,6 +5714,7 @@ void addFunctions()
 	lua_register(lua, "GetEntityAngleX", GetEntityAngleX);
 	lua_register(lua, "GetEntityAngleY", GetEntityAngleY);
 	lua_register(lua, "GetEntityAngleZ", GetEntityAngleZ);
+	lua_register(lua, "GetMovementSpeed", GetMovementSpeed);
 	lua_register(lua, "GetAnimationSpeed", GetAnimationSpeed);
 	lua_register(lua, "SetAnimationSpeedModulation", SetAnimationSpeedModulation);
 	lua_register(lua, "GetAnimationSpeedModulation", GetAnimationSpeedModulation);
